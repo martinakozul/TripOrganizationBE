@@ -4,9 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.camunda.organizer.trip_organization.model.database.City;
+import io.camunda.organizer.trip_organization.model.database.TripCity;
 import io.camunda.organizer.trip_organization.model.dtos.BasicTrip;
 import io.camunda.organizer.trip_organization.model.database.TripInformation;
 import io.camunda.organizer.trip_organization.model.database.TripPlan;
+import io.camunda.organizer.trip_organization.model.dtos.TripCityDTO;
 import io.camunda.organizer.trip_organization.model.dtos.TripInformationDto;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -21,6 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static io.camunda.organizer.trip_organization.helper.JsonUtils.createNameValue;
 import static io.camunda.organizer.trip_organization.helper.JsonUtils.getJsonBody;
@@ -30,23 +33,23 @@ public class TaskListController {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public void getCreateTripForm(long processDefinitionKey) {
-        String url = "http://localhost:8082/v1/forms/create_trip";
-
-        String urlWithParams = UriComponentsBuilder.fromHttpUrl(url)
-                .queryParam("processDefinitionKey", processDefinitionKey)
-                .toUriString();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + getBearerToken());
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        String response = restTemplate.exchange(urlWithParams, HttpMethod.GET, entity, String.class).getBody();
-
-        System.out.println("Response: " + response);
-    }
+//    public void getCreateTripForm(long processDefinitionKey) {
+//        String url = "http://localhost:8082/v1/forms/create_trip";
+//
+//        String urlWithParams = UriComponentsBuilder.fromHttpUrl(url)
+//                .queryParam("processDefinitionKey", processDefinitionKey)
+//                .toUriString();
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        headers.set("Authorization", "Bearer " + getBearerToken());
+//
+//        HttpEntity<String> entity = new HttpEntity<>(headers);
+//
+//        String response = restTemplate.exchange(urlWithParams, HttpMethod.GET, entity, String.class).getBody();
+//
+//        System.out.println("Response: " + response);
+//    }
 
     public List<BasicTrip> getActiveTasksForUser(String username) {
         String url = "http://localhost:8082/v1/tasks/search";
@@ -210,7 +213,7 @@ public class TaskListController {
         }
     }
 
-    public void fillTripPlan(TripPlan tripPlan, String taskId) {
+    public void fillTripPlan(TripCityDTO tripPlan, String taskId) {
         String url = "http://localhost:8082/v1/tasks/" + taskId + "/complete";
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -219,7 +222,6 @@ public class TaskListController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(getBearerToken());
-
         HttpEntity<String> requestEntity = new HttpEntity<>(tripPlan.getJson(), headers);
 
         try {
@@ -235,7 +237,7 @@ public class TaskListController {
         }
     }
 
-    public void reviewPartnerOffers(Long transportPartnerId, Long accommodationTransportId, String taskId) {
+    public void reviewPartnerOffers(List<Long> transportPartnerId, List<Long> accommodationTransportId, String taskId) {
         String url = "http://localhost:8082/v1/tasks/" + taskId + "/complete";
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -249,8 +251,16 @@ public class TaskListController {
         if (transportPartnerId == null || accommodationTransportId == null) {
             variables.add(createNameValue("reject_all", "true"));
         } else {
-            variables.add(createNameValue("accommodation_id", "\"" + accommodationTransportId + "\""));
-            variables.add(createNameValue("transport_id", "\"" + transportPartnerId + "\""));
+            String stringAccommodation = accommodationTransportId.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(","));
+
+            String stringTransport = transportPartnerId.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(","));
+
+            variables.add(createNameValue("accommodation_id", "\"" + stringAccommodation + "\""));
+            variables.add(createNameValue("transport_id", "\"" + stringTransport + "\""));
             variables.add(createNameValue("reject_all", "false"));
         }
 

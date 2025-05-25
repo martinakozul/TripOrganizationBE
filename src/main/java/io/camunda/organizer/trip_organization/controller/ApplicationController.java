@@ -44,7 +44,7 @@ public class ApplicationController {
     private TripInformationRepository tripInformationRepository;
 
     @PostMapping("/create")
-    public ResponseEntity<Long> createTrip(@RequestParam Long coordinatorId) {
+    public ResponseEntity<Long> createTrip(@RequestParam Long coordinatorId) throws InterruptedException {
         Optional<User> user = userRepository.findById(coordinatorId);
 
         if (user.isEmpty()) {
@@ -57,7 +57,9 @@ public class ApplicationController {
         );
 
         System.out.println("Response: " + processInstanceEvent.getProcessDefinitionKey() + " " + processInstanceEvent.getProcessInstanceKey());
-        tasklistController.getCreateTripForm(processInstanceEvent.getProcessDefinitionKey());
+//        Thread.sleep(1000L);
+//        System.out.println("Response 2: " + processInstanceEvent.getProcessDefinitionKey() + " " + processInstanceEvent.getProcessInstanceKey());
+//        tasklistController.getCreateTripForm(processInstanceEvent.getProcessDefinitionKey());
         return ResponseEntity.ok(processInstanceEvent.getProcessInstanceKey());
     }
 
@@ -89,13 +91,22 @@ public class ApplicationController {
     }
 
     @PostMapping("/{processInstanceKey}/fillTripPlan")
-    public ResponseEntity<String> fillTripPlan(@PathVariable long processInstanceKey, @RequestBody TripPlan tripPlan) {
+    public ResponseEntity<String> fillTripPlan(@PathVariable long processInstanceKey, @RequestBody List<TripCityDTO> tripPlan) {
         String taskId = tasklistController.getTaskId(processInstanceKey);
-        tasklistController.fillTripPlan(tripPlan, taskId);
-        tripPlan.setId(processInstanceKey);
-        tripService.saveItinerary(tripPlan);
+        //TODO fix list
+        tasklistController.fillTripPlan(tripPlan.get(0), taskId);
+        tripService.updateItinerary(processInstanceKey, tripPlan);
         return ResponseEntity.ok("");
     }
+
+//    @PostMapping("/{processInstanceKey}/fillTripPlan")
+//    public ResponseEntity<String> fillTripPlan(@PathVariable long processInstanceKey, @RequestBody TripPlan tripPlan) {
+//        String taskId = tasklistController.getTaskId(processInstanceKey);
+//        tasklistController.fillTripPlan(tripPlan, taskId);
+//        tripPlan.setId(processInstanceKey);
+//        tripService.saveItinerary(tripPlan);
+//        return ResponseEntity.ok("");
+//    }
 
 //    @GetMapping("/{processInstanceKey}/tripItinerary")
 //    public ResponseEntity<List<TripCityDTO>> getTripItinerary(@PathVariable long processInstanceKey) {

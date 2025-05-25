@@ -41,7 +41,7 @@ public class TripOfferService {
                     Partner partner = partnerMap.get(o.getPartner().getId());
                     return new AbstractMap.SimpleEntry<>(
                             partner.getOfferType().name().toLowerCase(),
-                            new NamedPartnerOffer(o.getPartner().getId(), o.getTripInformation().getId(), partner.getName(), o.getPricePerPerson())
+                            new NamedPartnerOffer(o.getId(), o.getPartner().getId(), o.getTripInformation().getId(), partner.getName(), o.getPricePerPerson(), o.getCity().getId(), o.getCity().getName())
                     );
                 })
                 .collect(Collectors.groupingBy(

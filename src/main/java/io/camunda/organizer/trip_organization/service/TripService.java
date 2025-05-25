@@ -116,7 +116,10 @@ public class TripService {
                     trip,
                     city,
                     tripCityDTO.getDaysSpent(),
-                    request.getCities().indexOf(tripCityDTO)
+                    request.getCities().indexOf(tripCityDTO),
+                    tripCityDTO.getPlan(),
+                    tripCityDTO.getIncludedActivities(),
+                    tripCityDTO.getExtraActivities()
             );
 
             tripCityRepository.save(tripCity);
@@ -147,6 +150,18 @@ public class TripService {
                 trip.getCoordinator().getId(),
                 cities
         );
+    }
+
+    public void updateItinerary(Long processKey, List<TripCityDTO> tripItinerary) {
+        for (TripCityDTO city : tripItinerary) {
+            TripCity tripCity = tripCityRepository.findById_TripIdAndId_CityId(processKey, city.getCityId());
+
+            tripCity.setPlan(city.getPlan());
+            tripCity.setIncludedActivities(city.getIncludedActivities());
+            tripCity.setExtraActivities(city.getExtraActivities());
+
+            tripCityRepository.save(tripCity);
+        }
     }
 
 }

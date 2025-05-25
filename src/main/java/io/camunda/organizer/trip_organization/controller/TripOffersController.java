@@ -58,9 +58,9 @@ public class TripOffersController {
     }
 
     @PostMapping("trip/{processKey}/accept")
-    public void acceptOffersForTrip(@PathVariable Long processKey, @RequestParam Long transportPartnerId, @RequestParam Long accommodationPartnerId) {
+    public void acceptOffersForTrip(@PathVariable Long processKey, @RequestParam List<Long> transportPartnerIds, @RequestParam List<Long> accommodationPartnerIds) {
         String taskId = tasklistController.getTaskId(processKey);
-        tasklistController.reviewPartnerOffers(transportPartnerId, accommodationPartnerId, taskId);
+        tasklistController.reviewPartnerOffers(transportPartnerIds, accommodationPartnerIds, taskId);
     }
 
     @Autowired

@@ -1,6 +1,11 @@
 package io.camunda.organizer.trip_organization.model.dtos;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static io.camunda.organizer.trip_organization.helper.JsonUtils.createNameValue;
+import static io.camunda.organizer.trip_organization.helper.JsonUtils.getJsonBody;
 
 public class TripCityDTO {
     private Long cityId;
@@ -84,5 +89,19 @@ public class TripCityDTO {
 
     public void setExtraActivities(List<String> extraActivities) {
         this.extraActivities = extraActivities;
+    }
+
+    public String getJson() {
+        List<Map<String, Object>> variables = new ArrayList<>();
+        variables.add(createNameValue("trip_plan", "\"" + plan + "\""));
+        variables.add(createNameValue("included_activities", "\"" + getCleanStringFromList(includedActivities) + "\""));
+        variables.add(createNameValue("extra_activities", "\"" + getCleanStringFromList(extraActivities) + "\""));
+
+        return getJsonBody(variables);
+    }
+
+    private String getCleanStringFromList(List<String> list) {
+        String clean = String.join(";", list);
+        return clean.replaceAll("\\r?\\n", "");
     }
 }
