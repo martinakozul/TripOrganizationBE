@@ -1,5 +1,6 @@
 package io.camunda.organizer.trip_organization.controller;
 
+import io.camunda.organizer.trip_organization.helper.CamundaLogHelper;
 import io.camunda.organizer.trip_organization.model.database.*;
 import io.camunda.organizer.trip_organization.model.dtos.TripCityDTO;
 import io.camunda.organizer.trip_organization.model.dtos.TripInformationDto;
@@ -12,6 +13,7 @@ import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,7 +46,7 @@ public class ApplicationController {
     private TripInformationRepository tripInformationRepository;
 
     @PostMapping("/create")
-    public ResponseEntity<Long> createTrip(@RequestParam Long coordinatorId) throws InterruptedException {
+    public ResponseEntity<Long> createTrip(@RequestParam String coordinatorId) {
         Optional<User> user = userRepository.findById(coordinatorId);
 
         if (user.isEmpty()) {
@@ -57,20 +59,24 @@ public class ApplicationController {
         );
 
         System.out.println("Response: " + processInstanceEvent.getProcessDefinitionKey() + " " + processInstanceEvent.getProcessInstanceKey());
-//        Thread.sleep(1000L);
-//        System.out.println("Response 2: " + processInstanceEvent.getProcessDefinitionKey() + " " + processInstanceEvent.getProcessInstanceKey());
-//        tasklistController.getCreateTripForm(processInstanceEvent.getProcessDefinitionKey());
+        CamundaLogHelper.logToCsvPrep(processInstanceEvent.getProcessInstanceKey(), "Start create trip", null, "Coordinator");
         return ResponseEntity.ok(processInstanceEvent.getProcessInstanceKey());
     }
 
+    @Transactional
     @PostMapping("/{processInstanceKey}/fillTripData")
-    public ResponseEntity<String> fillTripData(@PathVariable long processInstanceKey, @RequestBody TripInformationDto tripRequest) {
+    public void fillTripData(@PathVariable long processInstanceKey, @RequestBody TripInformationDto tripRequest, @RequestParam Boolean isGuide) {
         tripService.createTripWithCities(tripRequest);
         List<TripCityDTO> cityList = tripCityRepository.findById_TripId(processInstanceKey).stream().map(tc -> new TripCityDTO(tc.getCity().getId(), tc.getDaysSpent())).toList();
         TripInformationDto tripInformationDto = tripService.getTrip(processInstanceKey);
         tripInformationDto.setCities(cityList);
         tasklistController.completeTripCreation(tripInformationDto, processInstanceKey);
-        return ResponseEntity.ok("");
+
+        if (!isGuide) {
+            CamundaLogHelper.logToCsvPrep(processInstanceKey, "Create base trip", null, "Coordinator");
+        } else {
+            CamundaLogHelper.logToCsvPrep(processInstanceKey, "Fill trip itinerary", null, "Guide");
+        }
     }
 
     @GetMapping("/{processInstanceKey}")
@@ -87,6 +93,7 @@ public class ApplicationController {
     @PostMapping("/{processInstanceKey}/assignTourGuide")
     public ResponseEntity<String> assignTourGuide(@PathVariable long processInstanceKey, @RequestParam String tourGuide) {
         tasklistController.assignTourGuide(tourGuide, processInstanceKey);
+        CamundaLogHelper.logToCsvPrep(processInstanceKey, "Assign tour guide", null, "Coordinator");
         return ResponseEntity.ok("");
     }
 
@@ -96,6 +103,7 @@ public class ApplicationController {
         //TODO fix list
         tasklistController.fillTripPlan(tripPlan.get(0), taskId);
         tripService.updateItinerary(processInstanceKey, tripPlan);
+
         return ResponseEntity.ok("");
     }
 
@@ -123,6 +131,7 @@ public class ApplicationController {
         if (price != null) {
             tripService.updatePrice(processInstanceKey, price);
         }
+        CamundaLogHelper.logToCsvPrep(processInstanceKey, "Review trip itinerary", null, "Coordinator");
         return ResponseEntity.ok("");
     }
 

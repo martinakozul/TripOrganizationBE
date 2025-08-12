@@ -2,12 +2,13 @@ package io.camunda.organizer.trip_organization.controller;
 
 import io.camunda.organizer.trip_organization.model.dtos.BasicTrip;
 import io.camunda.organizer.trip_organization.model.database.TripInformation;
-import io.camunda.organizer.trip_organization.model.dtos.UserLogInResponse;
+import io.camunda.organizer.trip_organization.model.dtos.UserDto;
 import io.camunda.organizer.trip_organization.model.Role;
 import io.camunda.organizer.trip_organization.model.database.User;
 import io.camunda.organizer.trip_organization.repository.TripInformationRepository;
 import io.camunda.organizer.trip_organization.repository.UserRepository;
 import io.camunda.organizer.trip_organization.service.TripService;
+import io.camunda.organizer.trip_organization.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,28 +29,21 @@ public class UserController {
     private TripService tripService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private TripInformationRepository tripInformationRepository;
 
     @Autowired
     private TaskListController tasklistController;
 
     @PostMapping("/login")
-    public ResponseEntity<UserLogInResponse> login(@RequestParam String username, @RequestParam String password) {
-        User user = userRepository.findByUsername(username);
-
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        if (!password.equals(user.getPassword())) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(new UserLogInResponse(user.getId(), user.getRole()));
+    public ResponseEntity<Boolean> login(@RequestBody UserDto user) {
+        return ResponseEntity.ok(userService.saveNewUser(user));
     }
 
     @GetMapping("/{userId}/trips")
-    public ResponseEntity<List<TripInformation>> getTripsForUser(@PathVariable Long userId) {
+    public ResponseEntity<List<TripInformation>> getTripsForUser(@PathVariable String userId) {
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isEmpty()) {
@@ -71,7 +65,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/tasks/all")
-    public ResponseEntity<Map<String, List<BasicTrip>>> getActiveTasksForUser(@PathVariable Long userId) {
+    public ResponseEntity<Map<String, List<BasicTrip>>> getActiveTasksForUser(@PathVariable String userId) {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isEmpty()) {

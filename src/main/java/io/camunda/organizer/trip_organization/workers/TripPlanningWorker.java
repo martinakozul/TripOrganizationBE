@@ -1,8 +1,7 @@
 package io.camunda.organizer.trip_organization.workers;
 
+import io.camunda.organizer.trip_organization.helper.CamundaLogHelper;
 import io.camunda.organizer.trip_organization.service.MessageService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,30 +12,32 @@ import java.util.HashMap;
 
 @Component
 public class TripPlanningWorker {
-    private final static Logger LOG = LoggerFactory.getLogger(TripPlanningWorker.class);
 
     @Autowired
     private MessageService messageService;
 
     @JobWorker(type = "publish_trip")
-    public void publishTrip(@Variable(name = "trip_name") String tourGuide) {
-        LOG.info("charging credit card: {}", tourGuide);
+    public void publishTrip(@Variable(name = "trip_id") String tripId, @Variable(name = "trip_name") String tourGuide) {
+        CamundaLogHelper.logToCsvPrep(Long.parseLong(tripId), "Publish trip", null, "Backend");
+
     }
 
     @JobWorker(type = "send_assign_guide")
     public void assignGuide(@Variable(name = "trip_id") String tripId) {
-        LOG.info("assigning guide");
         messageService.throwMessage("assignGuideReceived", tripId, new HashMap<>());
     }
 
     @JobWorker(type = "send_trip")
     public void sendItinerary(@Variable(name = "trip_id") String tripId) {
-        LOG.info("sending itinerary");
         messageService.throwMessage("tripItineraryReceived", tripId, new HashMap<>());
     }
 
     @JobWorker(type = "cancel_trip")
     public void cancelTrip(@Variable(name = "trip_id") String tripId) {
-        LOG.info("cancelling everything");
+    }
+
+    @JobWorker(type = "app_lock_date")
+    public void getApplicationsLockDate(@Variable(name = "trip_id") String tripId) {
+        CamundaLogHelper.logToCsvPrep(Long.parseLong(tripId), "Get applications lock date", null, "Backend");
     }
 }

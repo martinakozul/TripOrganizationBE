@@ -12,14 +12,20 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendTestEmail(String to, String subject, String body) {
+    public void sendTestEmail(String to, String from, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("from@example.com");
+        if (to.isEmpty()) {
+            to = "to@gmail.com";
+        }
+        if (from.isEmpty()) {
+            from = "from@gmail.com";
+        }
         message.setTo(to);
         message.setSubject(subject);
         message.setText(body);
+        message.setFrom(from);
 
-        mailSender.send(message);
+//        mailSender.send(message);
     }
 }
 

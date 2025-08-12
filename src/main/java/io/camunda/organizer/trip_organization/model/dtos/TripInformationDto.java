@@ -19,10 +19,10 @@ public class TripInformationDto {
     private int minTravelers;
     private int maxTravelers;
     private TransportationType transportation;
-    private Long coordinatorId;
+    private String coordinatorId;
     private List<TripCityDTO> cities;
 
-    public TripInformationDto(Long id, String tripName, Long tripStartDate, Long tripEndDate, int minTravelers, int maxTravelers, TransportationType transportation, Long coordinatorId, List<TripCityDTO> cities) {
+    public TripInformationDto(Long id, String tripName, Long tripStartDate, Long tripEndDate, int minTravelers, int maxTravelers, TransportationType transportation, String coordinatorId, List<TripCityDTO> cities) {
         this.id = id;
         this.tripName = tripName;
         this.tripStartDate = tripStartDate;
@@ -98,11 +98,11 @@ public class TripInformationDto {
         this.cities = cities;
     }
 
-    public Long getCoordinatorId() {
+    public String getCoordinatorId() {
         return coordinatorId;
     }
 
-    public void setCoordinatorId(Long coordinatorId) {
+    public void setCoordinatorId(String coordinatorId) {
         this.coordinatorId = coordinatorId;
     }
 

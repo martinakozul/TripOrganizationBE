@@ -41,7 +41,7 @@ public class TripService {
 
         List<TripInformation> tripsInRange = tripInformationRepository.findByTripStartDateLessThanAndTripEndDateGreaterThan(trip.getTripEndDate(), trip.getTripStartDate());
 
-        Set<Long> unavailableGuideIds = new HashSet<>();
+        Set<String> unavailableGuideIds = new HashSet<>();
         for (TripInformation t : tripsInRange) {
             if (t.getGuide() != null) {
                 unavailableGuideIds.add(t.getGuide().getId());
@@ -75,12 +75,10 @@ public class TripService {
     }
 
     public void sendApplication(ApplicationRequest applicationRequest) {
-        String date = formatDate(Date.from(LocalDate.now().plusWeeks(3).atStartOfDay(ZoneId.systemDefault()).toInstant()));
         messageService.throwMessage(
                 "receive_trip_application",
                 applicationRequest.getId().toString(),
-                Map.of("application_id", applicationRequest.getId().toString(),
-                "trip_start_date", date)
+                Map.of("application_id", applicationRequest.getId().toString())
 
         );
     }
@@ -92,8 +90,7 @@ public class TripService {
 
     @Transactional
     public void createTripWithCities(TripInformationDto request) {
-        User coordinator = userRepository.findById(request.getCoordinatorId())
-                .orElseThrow(() -> new RuntimeException(""));
+        User coordinator = userRepository.findByRole(Role.COORDINATOR).get(0);
 
         TripInformation trip = new TripInformation();
         trip.setId(request.getId());

@@ -2,19 +2,14 @@ package io.camunda.organizer.trip_organization.controller;
 
 import io.camunda.organizer.trip_organization.model.dtos.ApplicationRequestDTO;
 import io.camunda.organizer.trip_organization.model.database.ApplicationRequest;
-import io.camunda.organizer.trip_organization.service.CamundaService;
-import io.camunda.organizer.trip_organization.service.MessageService;
-import io.camunda.organizer.trip_organization.service.TripApplicationService;
-import io.camunda.organizer.trip_organization.service.TripService;
+import io.camunda.organizer.trip_organization.service.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/trips")
 public class TripApplicationController {
-
-    @Autowired
-    private CamundaService camundaService;
 
     @Autowired
     private MessageService messageService;
@@ -28,25 +23,31 @@ public class TripApplicationController {
     @Autowired
     private TaskListController tasklistController;
 
+    @Autowired
+    private EmailService emailService;
+
+    @Transactional
     @PostMapping("/apply")
-    public String applyForTrip(@RequestBody ApplicationRequestDTO applicationRequestDTO) throws InterruptedException {
+    public Long applyForTrip(@RequestBody ApplicationRequestDTO applicationRequestDTO) {
+        emailService.sendTestEmail(
+                "automated.traveld@gmail.com",
+                applicationRequestDTO.getEmail(),
+                "Application request",
+                String.format(
+                        "Application request - trip ID %d\n" +
+                                "Number of people %d,\n" +
+                                "Names: %s\n" +
+                                "Contact number: %s\n" +
+                                "Email: %s",
+                        applicationRequestDTO.getTripId(),
+                        applicationRequestDTO.getNumberOfTravelers(),
+                        String.join(", ", applicationRequestDTO.getPeopleInformation()),
+                        applicationRequestDTO.getPhoneNumber(),
+                        applicationRequestDTO.getEmail()
+                )
+        );
         ApplicationRequest applicationRequest = tripApplicationService.saveApplicationToDatabase(applicationRequestDTO);
         tripService.sendApplication(applicationRequest);
-        return "";
-    }
-
-//    @PostMapping("/fillApplication")
-//    public String fillApplication(@RequestBody ApplicationRequest request, @RequestParam long processInstanceKey) {
-//        String taskId = tasklistController.getTaskId(processInstanceKey);
-//        tasklistController.applyForTheTrip(request, taskId);
-//        return "";
-//    }
-
-    @PostMapping("/pay")
-    public String payForTheTrip(@RequestParam String applicationId) {
-        camundaService.tripPaid(
-                applicationId
-        );
-        return applicationId;
+        return applicationRequest.getId();
     }
 }

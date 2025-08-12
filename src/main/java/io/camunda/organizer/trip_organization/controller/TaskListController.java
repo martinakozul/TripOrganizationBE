@@ -196,7 +196,11 @@ public class TaskListController {
         headers.setBearerAuth(getBearerToken());
 
         List<Map<String, Object>> variables = new ArrayList<>();
-        variables.add(createNameValue("tour_guide", "\"" + tourGuide + "\""));
+        if (tourGuide == null) {
+            variables.add(createNameValue("tour_guide", null));
+        } else {
+            variables.add(createNameValue("tour_guide", "\"" + tourGuide + "\""));
+        }
 
         HttpEntity<String> requestEntity = new HttpEntity<>(getJsonBody(variables), headers);
 

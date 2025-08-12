@@ -12,15 +12,10 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(nullable = false, unique = true)
     private String username;
-
-    @Column(nullable = false)
-    @JsonIgnore
-    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -34,11 +29,11 @@ public class User {
     @JsonIgnore
     private Set<TripInformation> guidedTrips = new HashSet<>();
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -48,14 +43,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Role getRole() {

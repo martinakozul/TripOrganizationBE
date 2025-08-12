@@ -1,9 +1,9 @@
 package io.camunda.organizer.trip_organization.controller;
 
+import io.camunda.organizer.trip_organization.helper.CamundaLogHelper;
 import io.camunda.organizer.trip_organization.model.database.Partner;
 import io.camunda.organizer.trip_organization.model.dtos.NamedPartnerOffer;
 import io.camunda.organizer.trip_organization.model.OfferType;
-import io.camunda.organizer.trip_organization.model.TransportationType;
 import io.camunda.organizer.trip_organization.service.CamundaService;
 import io.camunda.organizer.trip_organization.service.EmailService;
 import io.camunda.organizer.trip_organization.service.PartnerService;
@@ -33,7 +33,7 @@ public class TripOffersController {
 
     @GetMapping
     public ResponseEntity<List<Partner>> test() {
-        return ResponseEntity.ok(partnerService.findPartnersInCities(List.of(5L,4L,5L),null, OfferType.ACCOMMODATION));
+        return ResponseEntity.ok(partnerService.findPartnersInCities(List.of(5L, 4L, 5L), null, OfferType.ACCOMMODATION));
     }
 
     @PostMapping("/transport")
@@ -55,22 +55,16 @@ public class TripOffersController {
     public void rejectAllOffersForTrip(@PathVariable Long processKey) {
         String taskId = tasklistController.getTaskId(processKey);
         tasklistController.reviewPartnerOffers(null, null, taskId);
+        CamundaLogHelper.logToCsvPrep(processKey, "Review partner offers", null, "Coordinator");
     }
 
     @PostMapping("trip/{processKey}/accept")
     public void acceptOffersForTrip(@PathVariable Long processKey, @RequestParam List<Long> transportPartnerIds, @RequestParam List<Long> accommodationPartnerIds) {
         String taskId = tasklistController.getTaskId(processKey);
         tasklistController.reviewPartnerOffers(transportPartnerIds, accommodationPartnerIds, taskId);
+        CamundaLogHelper.logToCsvPrep(processKey, "Review partner offers", null, "Coordinator");
     }
 
     @Autowired
     private EmailService emailService;
-
-    @PostMapping("/send")
-    public String sendEmail(@RequestParam String to,
-                            @RequestParam String subject,
-                            @RequestParam String body) {
-        emailService.sendTestEmail(to, subject, body);
-        return "Email sent!";
-    }
 }

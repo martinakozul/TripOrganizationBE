@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TripApplicationRepository extends JpaRepository<ApplicationRequest, Long> {
+
+    long countByTripInformation_Id(Long tripId);
 }
