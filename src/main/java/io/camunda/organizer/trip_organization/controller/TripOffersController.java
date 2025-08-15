@@ -4,10 +4,7 @@ import io.camunda.organizer.trip_organization.helper.CamundaLogHelper;
 import io.camunda.organizer.trip_organization.model.database.Partner;
 import io.camunda.organizer.trip_organization.model.dtos.NamedPartnerOffer;
 import io.camunda.organizer.trip_organization.model.OfferType;
-import io.camunda.organizer.trip_organization.service.CamundaService;
-import io.camunda.organizer.trip_organization.service.EmailService;
-import io.camunda.organizer.trip_organization.service.PartnerService;
-import io.camunda.organizer.trip_organization.service.TripOfferService;
+import io.camunda.organizer.trip_organization.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +18,9 @@ public class TripOffersController {
 
     @Autowired
     private CamundaService camundaService;
+
+    @Autowired
+    private TripService tripService;
 
     @Autowired
     private TripOfferService offerService;
@@ -62,6 +62,7 @@ public class TripOffersController {
     public void acceptOffersForTrip(@PathVariable Long processKey, @RequestParam List<Long> transportPartnerIds, @RequestParam List<Long> accommodationPartnerIds) {
         String taskId = tasklistController.getTaskId(processKey);
         tasklistController.reviewPartnerOffers(transportPartnerIds, accommodationPartnerIds, taskId);
+        tripService.acceptPartnerOffers(transportPartnerIds, accommodationPartnerIds);
         CamundaLogHelper.logToCsvPrep(processKey, "Review partner offers", null, "Coordinator");
     }
 

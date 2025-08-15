@@ -107,22 +107,4 @@ public class ApplicationRequest {
     public void setTripInformation(TripInformation tripInformation) {
         this.tripInformation = tripInformation;
     }
-
-    //    public String getJson() {
-//        List<Map<String, Object>> variables = new ArrayList<>();
-//        variables.add(createNameValue("name_one", "\"" + nameOne + "\""));
-//        variables.add(createNameValue("name_two", "\"" + nameTwo + "\""));
-//        variables.add(createNameValue("name_three", "\"" + nameThree + "\""));
-//        variables.add(createNameValue("name_four", "\"" + nameFour + "\""));
-//        variables.add(createNameValue("name_five", "\"" + nameFive + "\""));
-//        variables.add(createNameValue("email", "\"" + email + "\""));
-//        variables.add(createNameValue("phone_number", "\"" + phoneNumber + "\""));
-//        variables.add(createNameValue("surname_one", "\"" + surnameOne + "\""));
-//        variables.add(createNameValue("surname_two", "\"" + surnameTwo + "\""));
-//        variables.add(createNameValue("surname_three", "\"" + surnameThree + "\""));
-//        variables.add(createNameValue("surname_four", "\"" + surnameFour + "\""));
-//        variables.add(createNameValue("surname_five", "\"" + surnameFive + "\""));
-//
-//        return getJsonBody(variables);
-//    }
 }

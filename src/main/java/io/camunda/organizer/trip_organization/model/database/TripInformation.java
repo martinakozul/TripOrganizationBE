@@ -40,7 +40,7 @@ public class TripInformation {
     @JsonIgnore
     private List<ApplicationRequest> applications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<TripCity> cities = new ArrayList<>();
 
     public TripInformation() {

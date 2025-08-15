@@ -1,0 +1,160 @@
+{
+  "components": [
+    {
+      "label": "First name",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1euozhr",
+        "columns": null
+      },
+      "id": "Field_018i0ry",
+      "key": "name_one",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Surname",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1euozhr",
+        "columns": null
+      },
+      "id": "Field_0pf6ujg",
+      "key": "surname_one",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Email",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1goc129",
+        "columns": null
+      },
+      "id": "Field_1f9ahgk",
+      "key": "email",
+      "validate": {
+        "validationType": "email",
+        "required": true
+      }
+    },
+    {
+      "label": "Phone number",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_117x07y",
+        "columns": null
+      },
+      "id": "Field_1n4edpy",
+      "key": "textfield_sxtxxh",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Trip id",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_03ap3zi",
+        "columns": null
+      },
+      "id": "Field_0cslp4d",
+      "key": "textfield_lai9lh",
+      "validate": {
+        "required": true
+      },
+      "readonly": false
+    },
+    {
+      "label": "First name (2)",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_098kimc",
+        "columns": null
+      },
+      "id": "Field_1fxq8au",
+      "key": "name_two"
+    },
+    {
+      "label": "Surname (2)",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_098kimc",
+        "columns": null
+      },
+      "id": "Field_133na67",
+      "key": "surname_two"
+    },
+    {
+      "label": "First name (3)",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1mflu6e",
+        "columns": null
+      },
+      "id": "Field_0s6va7u",
+      "key": "name_three"
+    },
+    {
+      "label": "Surname (3)",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1mflu6e",
+        "columns": null
+      },
+      "id": "Field_0sjec91",
+      "key": "surname_three"
+    },
+    {
+      "label": "First name (4)",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_03l2vik",
+        "columns": null
+      },
+      "id": "Field_1rk7614",
+      "key": "name_four"
+    },
+    {
+      "label": "Surname (4)",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_03l2vik",
+        "columns": null
+      },
+      "id": "Field_0r9t4lg",
+      "key": "surname_four"
+    },
+    {
+      "label": "First name (5)",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0xs9pqt",
+        "columns": null
+      },
+      "id": "Field_1t08imf",
+      "key": "name_five"
+    },
+    {
+      "label": "Surname (5)",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0xs9pqt",
+        "columns": null
+      },
+      "id": "Field_1qcjdi3",
+      "key": "surname_five"
+    }
+  ],
+  "type": "default",
+  "id": "application_form",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.5.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.23.0"
+  },
+  "schemaVersion": 16
+}

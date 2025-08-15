@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_02brq1x" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+  <bpmn:process id="generator_start" name="Generator start" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Start generator">
+      <bpmn:extensionElements>
+        <zeebe:ioMapping>
+          <zeebe:output source="=1" target="tripCount" />
+          <zeebe:output source="=2251799814911731" target="tripId" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0ustmuo</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_0bat6w8" name="Create trip instance">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="mock_trip" />
+        <zeebe:ioMapping>
+          <zeebe:output source="=tripCount - 1" target="tripCount" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1xji7rs</bpmn:incoming>
+      <bpmn:incoming>Flow_1qm9yoe</bpmn:incoming>
+      <bpmn:outgoing>Flow_0k9s281</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0k9s281" sourceRef="Activity_0bat6w8" targetRef="Gateway_1qim9hm" />
+    <bpmn:endEvent id="Event_1c985zn" name="End generator">
+      <bpmn:incoming>Flow_04krxmj</bpmn:incoming>
+      <bpmn:incoming>Flow_0k2pr44</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="Gateway_1qim9hm" name="Mock more trip instances?">
+      <bpmn:incoming>Flow_0k9s281</bpmn:incoming>
+      <bpmn:outgoing>Flow_1xji7rs</bpmn:outgoing>
+      <bpmn:outgoing>Flow_04krxmj</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1xji7rs" name="Yes" sourceRef="Gateway_1qim9hm" targetRef="Activity_0bat6w8">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=tripCount &gt; 0</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_04krxmj" name="No" sourceRef="Gateway_1qim9hm" targetRef="Event_1c985zn">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=tripCount = 0</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_1xb1thi" name="Mock apply for trip?">
+      <bpmn:incoming>Flow_0ustmuo</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qm9yoe</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0aes63b</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0ustmuo" sourceRef="StartEvent_1" targetRef="Gateway_1xb1thi" />
+    <bpmn:sequenceFlow id="Flow_1qm9yoe" name="No" sourceRef="Gateway_1xb1thi" targetRef="Activity_0bat6w8">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=tripId = null</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0aes63b" name="Yes" sourceRef="Gateway_1xb1thi" targetRef="Activity_0c9g7o4">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=tripId != null</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_1y3frhj" name="Mock more applications?">
+      <bpmn:incoming>Flow_0fhimqk</bpmn:incoming>
+      <bpmn:outgoing>Flow_10jxa82</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0k2pr44</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0fhimqk" sourceRef="Activity_0c9g7o4" targetRef="Gateway_1y3frhj" />
+    <bpmn:sequenceFlow id="Flow_10jxa82" name="Yes" sourceRef="Gateway_1y3frhj" targetRef="Activity_0c9g7o4">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=tripCount &gt; 0</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0k2pr44" name="No" sourceRef="Gateway_1y3frhj" targetRef="Event_1c985zn">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=tripCount = 0</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="Activity_0c9g7o4" name="Apply for trip">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="mock_apply" />
+        <zeebe:ioMapping>
+          <zeebe:output source="=tripCount - 1" target="tripCount" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0aes63b</bpmn:incoming>
+      <bpmn:incoming>Flow_10jxa82</bpmn:incoming>
+      <bpmn:outgoing>Flow_0fhimqk</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="generator_start">
+      <bpmndi:BPMNShape id="Activity_0kctu8c_di" bpmnElement="Activity_0bat6w8">
+        <dc:Bounds x="390" y="317" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1ttl4fx_di" bpmnElement="Gateway_1qim9hm" isMarkerVisible="true">
+        <dc:Bounds x="555" y="332" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="544" y="302" width="73" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0fo5eab" bpmnElement="Gateway_1y3frhj" isMarkerVisible="true">
+        <dc:Bounds x="555" y="155" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="548" y="212" width="65" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1xb1thi_di" bpmnElement="Gateway_1xb1thi" isMarkerVisible="true">
+        <dc:Bounds x="275" y="245" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="344" y="260" width="72" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="252" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="160" y="295" width="74" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1c985zn_di" bpmnElement="Event_1c985zn">
+        <dc:Bounds x="682" y="252" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="665" y="295" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0br1rbp_di" bpmnElement="Activity_0c9g7o4">
+        <dc:Bounds x="390" y="140" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1xji7rs_di" bpmnElement="Flow_1xji7rs">
+        <di:waypoint x="580" y="382" />
+        <di:waypoint x="580" y="460" />
+        <di:waypoint x="440" y="460" />
+        <di:waypoint x="440" y="397" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="501" y="442" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qm9yoe_di" bpmnElement="Flow_1qm9yoe">
+        <di:waypoint x="300" y="295" />
+        <di:waypoint x="300" y="357" />
+        <di:waypoint x="390" y="357" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="308" y="323" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0k9s281_di" bpmnElement="Flow_0k9s281">
+        <di:waypoint x="490" y="357" />
+        <di:waypoint x="555" y="357" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04krxmj_di" bpmnElement="Flow_04krxmj">
+        <di:waypoint x="605" y="357" />
+        <di:waypoint x="640" y="357" />
+        <di:waypoint x="640" y="270" />
+        <di:waypoint x="682" y="270" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="648" y="311" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0fhimqk_di" bpmnElement="Flow_0fhimqk">
+        <di:waypoint x="490" y="180" />
+        <di:waypoint x="555" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10jxa82_di" bpmnElement="Flow_10jxa82">
+        <di:waypoint x="580" y="155" />
+        <di:waypoint x="580" y="80" />
+        <di:waypoint x="440" y="80" />
+        <di:waypoint x="440" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="501" y="62" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0k2pr44_di" bpmnElement="Flow_0k2pr44">
+        <di:waypoint x="605" y="180" />
+        <di:waypoint x="640" y="180" />
+        <di:waypoint x="640" y="270" />
+        <di:waypoint x="682" y="270" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="648" y="222" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ustmuo_di" bpmnElement="Flow_0ustmuo">
+        <di:waypoint x="215" y="270" />
+        <di:waypoint x="275" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0aes63b_di" bpmnElement="Flow_0aes63b">
+        <di:waypoint x="300" y="245" />
+        <di:waypoint x="300" y="180" />
+        <di:waypoint x="390" y="180" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="306" y="210" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

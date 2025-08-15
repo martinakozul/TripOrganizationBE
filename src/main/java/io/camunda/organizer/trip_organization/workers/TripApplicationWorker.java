@@ -1,7 +1,6 @@
 package io.camunda.organizer.trip_organization.workers;
 
 import io.camunda.organizer.trip_organization.helper.CamundaLogHelper;
-import io.camunda.organizer.trip_organization.model.database.ApplicationRequest;
 import io.camunda.organizer.trip_organization.service.EmailService;
 import io.camunda.organizer.trip_organization.service.MessageService;
 import io.camunda.organizer.trip_organization.service.TripApplicationService;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
-import java.util.Random;
 
 @Component
 public class TripApplicationWorker {

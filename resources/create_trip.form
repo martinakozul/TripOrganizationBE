@@ -1,0 +1,166 @@
+{
+  "components": [
+    {
+      "label": "Trip name",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1qsnvrw",
+        "columns": null
+      },
+      "id": "Field_1bray5f",
+      "key": "trip_name",
+      "description": "trip_name",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "values": [
+        {
+          "label": "France",
+          "value": "france"
+        },
+        {
+          "label": "Spain",
+          "value": "spain"
+        },
+        {
+          "label": "Slovenia",
+          "value": "slovenia"
+        },
+        {
+          "label": "Croatia",
+          "value": "croatia"
+        },
+        {
+          "label": "Italy",
+          "value": "italy"
+        }
+      ],
+      "label": "Country",
+      "type": "select",
+      "layout": {
+        "row": "Row_0wb5zlx",
+        "columns": null
+      },
+      "id": "Field_0unmzkc",
+      "key": "country",
+      "description": "country",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Cities",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_14tsh5z",
+        "columns": null
+      },
+      "id": "Field_0iee9e0",
+      "key": "cities",
+      "description": "cities",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "subtype": "date",
+      "dateLabel": "Trip start date",
+      "label": "Date time",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_0axalu3",
+        "columns": null
+      },
+      "id": "Field_1937arx",
+      "key": "start_date",
+      "description": "trip_start_date",
+      "disallowPassedDates": true,
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "subtype": "date",
+      "dateLabel": "Trip end date",
+      "label": "Date time",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_0codg3k",
+        "columns": null
+      },
+      "id": "Field_1cec71p",
+      "key": "end_date",
+      "description": "trip_end_date",
+      "validate": {
+        "required": true
+      },
+      "disallowPassedDates": true
+    },
+    {
+      "label": "Min travelers",
+      "type": "number",
+      "layout": {
+        "row": "Row_0a0hb4x",
+        "columns": null
+      },
+      "id": "Field_086b3le",
+      "key": "min_travelers",
+      "description": "min_travelers",
+      "validate": {
+        "required": true,
+        "min": 0
+      }
+    },
+    {
+      "label": "Max travelera",
+      "type": "number",
+      "layout": {
+        "row": "Row_0l0ownb",
+        "columns": null
+      },
+      "id": "Field_13hsmjo",
+      "key": "max_travelers",
+      "description": "max_travelers",
+      "validate": {
+        "required": true,
+        "min": 0
+      }
+    },
+    {
+      "values": [
+        {
+          "label": "Bus",
+          "value": "bus"
+        },
+        {
+          "label": "Plane",
+          "value": "plane"
+        }
+      ],
+      "label": "Transportation",
+      "type": "radio",
+      "layout": {
+        "row": "Row_0a8cvdk",
+        "columns": null
+      },
+      "id": "Field_15g8a4s",
+      "key": "transportation",
+      "description": "transportation",
+      "validate": {
+        "required": true
+      },
+      "properties": {}
+    }
+  ],
+  "type": "default",
+  "id": "create_trip",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.5.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.23.0"
+  },
+  "schemaVersion": 16
+}

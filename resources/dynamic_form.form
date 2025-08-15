@@ -1,0 +1,49 @@
+{
+  "components": [
+    {
+      "components": [
+        {
+          "label": "Text field",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_0lguny9",
+            "columns": 13
+          },
+          "id": "Field_0j27oul",
+          "key": "name"
+        },
+        {
+          "label": "Number",
+          "type": "number",
+          "layout": {
+            "row": "Row_0lguny9",
+            "columns": null
+          },
+          "id": "Field_1iazw81",
+          "key": "price"
+        }
+      ],
+      "showOutline": true,
+      "isRepeating": true,
+      "allowAddRemove": true,
+      "defaultRepetitions": 1,
+      "label": "Dynamic list",
+      "type": "dynamiclist",
+      "layout": {
+        "row": "Row_03qv2e7",
+        "columns": null
+      },
+      "id": "Field_1cpbeyx",
+      "path": "prices"
+    }
+  ],
+  "type": "default",
+  "id": "dynamic_form",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.5.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.23.0"
+  },
+  "schemaVersion": 16
+}

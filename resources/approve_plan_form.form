@@ -1,0 +1,46 @@
+{
+  "components": [
+    {
+      "label": "Note",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0gzebdh",
+        "columns": null
+      },
+      "id": "Field_1uzyqrb",
+      "key": "note",
+      "description": "note"
+    },
+    {
+      "label": "Approve",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_020hoaf",
+        "columns": null
+      },
+      "id": "Field_1eufhio",
+      "key": "approve",
+      "description": "approve"
+    },
+    {
+      "label": "Price",
+      "type": "number",
+      "layout": {
+        "row": "Row_0oyhuqq",
+        "columns": null
+      },
+      "id": "Field_06ytmnm",
+      "key": "price_per_person",
+      "description": "price_per_person"
+    }
+  ],
+  "type": "default",
+  "id": "approve_plan_form",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.5.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.23.0"
+  },
+  "schemaVersion": 16
+}

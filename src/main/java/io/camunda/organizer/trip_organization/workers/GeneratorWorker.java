@@ -76,14 +76,14 @@ public class GeneratorWorker {
         int nextInt = random.nextInt(10);
 
         String guide = null;
-        if (false) {
+        if (nextInt != 0) {
             guide = "guide1@gmail.com";
         }
 
         applicationController.assignTourGuide(Long.parseLong(tripId), guide);
 
         return Map.of(
-                "guideAssigned", false
+                "guideAssigned", nextInt != 0
         );
     }
 

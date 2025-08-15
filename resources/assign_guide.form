@@ -1,0 +1,38 @@
+{
+  "components": [
+    {
+      "values": [
+        {
+          "label": "Dave",
+          "value": "dave"
+        },
+        {
+          "label": "Susan",
+          "value": "susan"
+        },
+        {
+          "label": "Eddy",
+          "value": "eddy"
+        }
+      ],
+      "label": "Tour guide",
+      "type": "select",
+      "layout": {
+        "row": "Row_0k0b3ft",
+        "columns": null
+      },
+      "id": "Field_1svdbzg",
+      "key": "tour_guide",
+      "description": "tour guide"
+    }
+  ],
+  "type": "default",
+  "id": "assign_guide_form",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.5.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.23.0"
+  },
+  "schemaVersion": 16
+}

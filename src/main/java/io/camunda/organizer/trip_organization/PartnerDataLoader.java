@@ -23,18 +23,6 @@ import java.util.Set;
 @Configuration
 public class PartnerDataLoader {
 
-//    @Bean
-//    public CommandLineRunner cleanUpData(UserRepository userRepository, TripInformationRepository tripInformationRepository) {
-//        return args -> {
-//            // Clean up all data from the User table
-//            userRepository.deleteAll();
-//            System.out.println("All users have been deleted.");
-//
-//            // Clean up all data from the TripInformation table
-//            tripInformationRepository.deleteAll();
-//            System.out.println("All trips have been deleted.");
-//        };
-//    }
 
 //    @Bean
 //    public CommandLineRunner insertSamplePartners(PartnerRepository partnerRepository, CityRepository cityRepository) {

@@ -5,9 +5,12 @@ import io.camunda.organizer.trip_organization.model.OfferType;
 import io.camunda.organizer.trip_organization.model.TransportationType;
 import io.camunda.organizer.trip_organization.model.database.City;
 import io.camunda.organizer.trip_organization.model.database.Partner;
+import io.camunda.organizer.trip_organization.model.dtos.TripCityDTO;
 import io.camunda.organizer.trip_organization.repository.CityRepository;
+import io.camunda.organizer.trip_organization.repository.TripInformationRepository;
 import io.camunda.organizer.trip_organization.service.EmailService;
 import io.camunda.organizer.trip_organization.service.PartnerService;
+import io.camunda.organizer.trip_organization.service.TripService;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import io.camunda.zeebe.spring.client.annotation.Variable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,9 @@ import java.util.stream.Collectors;
 
 @Component
 public class TripOffersWorker {
+
+    @Autowired
+    private TripService tripService;
 
     @Autowired
     private PartnerService partnerService;
@@ -49,22 +55,34 @@ public class TripOffersWorker {
                 .map(Long::valueOf)
                 .toList();
 
+        List<Long> accommodationCityIds = tripService.getTrip(Long.valueOf(tripId)).getCities().stream()
+                .filter(tc -> tc.getDaysSpent() > 0)
+                .map(TripCityDTO::getCityId)
+                .toList();
+
         TransportationType transportationType = transportation.equalsIgnoreCase("plane")
                 ? TransportationType.PLANE
                 : TransportationType.BUS;
 
         List<Partner> transportPartners = partnerService.findPartnersInCities(cityIdList, transportationType, OfferType.TRANSPORT);
-        List<Partner> accommodationPartners = partnerService.findPartnersInCities(cityIdList, null, OfferType.ACCOMMODATION);
-
-        Map<Long, String> cityIdToName = cityRepository.findAllById(cityIdList).stream()
-                .collect(Collectors.toMap(City::getId, City::getName));
+        List<Partner> accommodationPartners = partnerService.findPartnersInCities(accommodationCityIds, null, OfferType.ACCOMMODATION);
 
         Function<List<Partner>, List<String>> formatPartners = partners -> partners.stream()
-                .flatMap(partner ->
-                        partner.getCities().stream()
-                                .filter(city -> cityIdList.contains(city.getId()))
-                                .map(city -> String.format("%d_%d", partner.getId(), city.getId()))
-                )
+                .flatMap(partner -> {
+                    List<City> matchingCities = partner.getCities().stream()
+                            .filter(city -> cityIdList.contains(city.getId()))
+                            .toList();
+
+                    if (transportation.equalsIgnoreCase("bus")) {
+                        return matchingCities.stream()
+                                .findFirst()
+                                .stream()
+                                .map(city -> String.format("%d_%d", partner.getId(), city.getId()));
+                    } else {
+                        return matchingCities.stream()
+                                .map(city -> String.format("%d_%d", partner.getId(), city.getId()));
+                    }
+                })
                 .toList();
 
         return Map.of(

@@ -1,6 +1,7 @@
 package io.camunda.organizer.trip_organization.model.database;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class TripPlan {
 
     @Id
     long id;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonAlias("trip_plan")
     private List<String> tripPlan;
     @JsonAlias("included_activities")

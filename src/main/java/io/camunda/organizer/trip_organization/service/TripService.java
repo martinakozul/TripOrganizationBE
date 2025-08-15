@@ -5,15 +5,15 @@ import io.camunda.organizer.trip_organization.model.Role;
 import io.camunda.organizer.trip_organization.model.dtos.TripCityDTO;
 import io.camunda.organizer.trip_organization.model.dtos.TripInformationDto;
 import io.camunda.organizer.trip_organization.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class TripService {
@@ -23,6 +23,9 @@ public class TripService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PartnerOfferRepository partnerOfferRepository;
 
     @Autowired
     private CityRepository cityRepository;
@@ -161,4 +164,19 @@ public class TripService {
         }
     }
 
+    @Transactional
+    public void acceptPartnerOffers(List<Long> transportOfferIds, List<Long> accommodationOfferIds) {
+        List<Long> allAcceptedPartnerIds = Stream.concat(
+                transportOfferIds.stream(),
+                accommodationOfferIds.stream()
+        ).toList();
+
+        List<PartnerOffer> offers = partnerOfferRepository.findAllById(allAcceptedPartnerIds);
+
+        for (PartnerOffer offer : offers) {
+            offer.setAccepted(true);
+        }
+
+        partnerOfferRepository.saveAll(offers);
+    }
 }

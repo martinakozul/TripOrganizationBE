@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0mianm0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+  <bpmn:process id="trip_organization" name="Trip Organization" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_10rae1d</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_0fz4yr9">
+      <bpmn:incoming>Flow_0dwqbl0</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Activity_0uw3xn7" name="Apply for the trip">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formId="response_form" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_10rae1d</bpmn:incoming>
+      <bpmn:outgoing>Flow_0dwqbl0</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_10rae1d" sourceRef="StartEvent_1" targetRef="Activity_0uw3xn7" />
+    <bpmn:sequenceFlow id="Flow_0dwqbl0" sourceRef="Activity_0uw3xn7" targetRef="Event_0fz4yr9" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="trip_organization">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="162" y="142" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0uw3xn7_di" bpmnElement="Activity_0uw3xn7">
+        <dc:Bounds x="260" y="120" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0fz4yr9_di" bpmnElement="Event_0fz4yr9">
+        <dc:Bounds x="422" y="142" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_10rae1d_di" bpmnElement="Flow_10rae1d">
+        <di:waypoint x="198" y="160" />
+        <di:waypoint x="260" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dwqbl0_di" bpmnElement="Flow_0dwqbl0">
+        <di:waypoint x="360" y="160" />
+        <di:waypoint x="422" y="160" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

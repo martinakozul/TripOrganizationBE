@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="refund_policy" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+  <decision id="refund_polic" name="Refund">
+    <decisionTable id="DecisionTable_1psq40y" hitPolicy="FIRST">
+      <input id="Input_1" label="Days until trip" biodi:width="192">
+        <inputExpression id="InputExpression_1" typeRef="number">
+          <text>(date(trip_start_date) - today()).days</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Refund percent" name="refund_percent" typeRef="number" />
+      <rule id="DecisionRule_027nput">
+        <description>Less than 2 weeks -&gt; No refund</description>
+        <inputEntry id="UnaryTests_0zb35l7">
+          <text>&lt; 14</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0npe9lu">
+          <text>0</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1675qym">
+        <description>14 - 30 days before - 30%</description>
+        <inputEntry id="UnaryTests_0eq34hl">
+          <text>&lt; 30</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1jfnii9">
+          <text>30</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1u577ai">
+        <description>1-2 months before - 60%</description>
+        <inputEntry id="UnaryTests_15ej9zw">
+          <text>&lt; 60</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1g4i94d">
+          <text>60</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0lqmnzd">
+        <description>More than 2 months - 100%</description>
+        <inputEntry id="UnaryTests_0jtp2rg">
+          <text>&gt;= 60</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0mpss8v">
+          <text>100</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="refund_polic">
+        <dc:Bounds height="80" width="180" x="160" y="80" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

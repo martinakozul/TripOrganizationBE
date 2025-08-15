@@ -1,0 +1,67 @@
+{
+  "components": [
+    {
+      "label": "Trip plan",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_12m0shk",
+        "columns": null
+      },
+      "id": "Field_18ugzji",
+      "key": "trip_plan",
+      "description": "trip_plan",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Included activities",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0b7tz3w",
+        "columns": null
+      },
+      "id": "Field_1ujs0zj",
+      "key": "included_activities",
+      "description": "included_activities",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Extra_activities",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0sfuean",
+        "columns": null
+      },
+      "id": "Field_1a24um5",
+      "key": "extra_activities",
+      "description": "extra_activities",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Note",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_07f4x4m",
+        "columns": null
+      },
+      "id": "Field_0ir1ef2",
+      "key": "note",
+      "readonly": true,
+      "description": "note"
+    }
+  ],
+  "type": "default",
+  "id": "trip_plan_form",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.5.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.23.0"
+  },
+  "schemaVersion": 16
+}

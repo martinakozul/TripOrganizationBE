@@ -1,5 +1,6 @@
 package io.camunda.organizer.trip_organization.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.camunda.organizer.trip_organization.helper.CamundaLogHelper;
 import io.camunda.organizer.trip_organization.model.database.*;
 import io.camunda.organizer.trip_organization.model.dtos.TripCityDTO;
@@ -81,6 +82,12 @@ public class ApplicationController {
 
     @GetMapping("/{processInstanceKey}")
     public ResponseEntity<TripInformationDto> getTripInformation(@PathVariable long processInstanceKey) {
+        try {
+            new ObjectMapper().writeValueAsString(tripService.getTrip(processInstanceKey));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return ResponseEntity.ok(tripService.getTrip(processInstanceKey));
     }
 
@@ -106,21 +113,6 @@ public class ApplicationController {
 
         return ResponseEntity.ok("");
     }
-
-//    @PostMapping("/{processInstanceKey}/fillTripPlan")
-//    public ResponseEntity<String> fillTripPlan(@PathVariable long processInstanceKey, @RequestBody TripPlan tripPlan) {
-//        String taskId = tasklistController.getTaskId(processInstanceKey);
-//        tasklistController.fillTripPlan(tripPlan, taskId);
-//        tripPlan.setId(processInstanceKey);
-//        tripService.saveItinerary(tripPlan);
-//        return ResponseEntity.ok("");
-//    }
-
-//    @GetMapping("/{processInstanceKey}/tripItinerary")
-//    public ResponseEntity<List<TripCityDTO>> getTripItinerary(@PathVariable long processInstanceKey) {
-//        List<TripCityDTO> cityList = tripCityRepository.findById_TripId(processInstanceKey).stream().map(tc -> new TripCityDTO(tc.getCity().getId(), tc.getDaysSpent(), tc.getCity().getName(), tc.getOrderInTrip(), tc.getPlan())).toList();
-//        return ResponseEntity.ok(cityList);
-//    }
 
     @PostMapping("/{processInstanceKey}/reviewTripItinerary")
     public ResponseEntity<String> reviewTripItinerary(@PathVariable long processInstanceKey, @RequestParam(required = false) Double price, @RequestParam(required = false) String note) {

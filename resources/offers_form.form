@@ -1,0 +1,52 @@
+{
+  "components": [
+    {
+      "label": "AccommodationId",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0eqomcb",
+        "columns": null
+      },
+      "id": "Field_0gdudud",
+      "key": "accommodation_id",
+      "description": "accommodation_id",
+      "conditional": {
+        "hide": "=reject_all = true"
+      }
+    },
+    {
+      "label": "TransportId",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_07mf96s",
+        "columns": null
+      },
+      "id": "Field_1lz8jh9",
+      "key": "transport_id",
+      "description": "transport_id",
+      "conditional": {
+        "hide": "=reject_all = true"
+      }
+    },
+    {
+      "label": "Reject all offers",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_0kzmce2",
+        "columns": null
+      },
+      "id": "Field_0gr5eew",
+      "key": "reject_all",
+      "description": "reject_all"
+    }
+  ],
+  "type": "default",
+  "id": "offers_form",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.5.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.23.0"
+  },
+  "schemaVersion": 16
+}

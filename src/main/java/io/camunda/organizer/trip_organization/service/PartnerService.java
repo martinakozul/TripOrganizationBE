@@ -60,10 +60,5 @@ public class PartnerService {
         }
 
         return new ArrayList<>(partnerList);
-
-//                partnerList
-//                .stream()
-//                .map(partner -> String.valueOf(partner.getId()))
-//                .collect(Collectors.toList());
     }
 }

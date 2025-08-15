@@ -13,8 +13,8 @@ public class TripCityDTO {
     private String cityName;
     private int order;
     private String plan;
-    private List<String> includedActivities;
-    private List<String> extraActivities;
+    private List<String> includedActivities = new ArrayList<>();
+    private List<String> extraActivities = new ArrayList<>();
 
 
     public TripCityDTO() {
@@ -101,6 +101,7 @@ public class TripCityDTO {
     }
 
     private String getCleanStringFromList(List<String> list) {
+        if (list == null) return "";
         String clean = String.join(";", list);
         return clean.replaceAll("\\r?\\n", "");
     }
